@@ -1,8 +1,0 @@
-#To use network policies we need to use the calico.
-#Use below topology for appliying network policies.
-kops create cluster --name=shiva-devops.online \
---state=s3://k8s-shiva --zones=us-west-1a,us-west-1b \
---node-count=3 --node-size=t3.medium --master-size=t3.medium \
---master-volume-size 10 --node-volume-size 10 \
---topology private --network calico \
---dns-zone=shiva-devops.online --yes or --dry-run --output yaml
