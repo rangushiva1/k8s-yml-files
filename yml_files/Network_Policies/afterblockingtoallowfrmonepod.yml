@@ -1,0 +1,28 @@
+##if you want to allow traffic to a particual pod after block whole ns, we can allow for one pod
+---
+kind: NetworkPolicy
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: web-deny-from-pod
+  namespace: wantoblocknspods
+spec:
+  podSelector:
+    matchLabels:
+      app: lablesofapp
+  ingress:
+    - from:
+        - podSelector:
+            matchLabels:
+              app: podnameapptoallow
+        - namespaceSelector:
+            matchLabels:
+              env: envofthatpod
+       ports:
+         - protocol: TCP
+           port: 8000
+         - protocol: TCP
+           port: 8888
+
+# if you get any error then remove ports from above
+# kubectl get netpol -- comnd to get details of policies
+
