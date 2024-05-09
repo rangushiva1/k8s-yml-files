@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+  labels:
+    app: nginx
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - image: sreeharshav/utils:latest
+        name: utils
+        volumeMounts:
+        - mountPath: /etc/myemptydir
+          name: myemptydir
+      - image: nginx:latest
+        name: nginx
+        volumeMounts:
+        - mountPath: /tmp/myemptydir
+          name: myemptydir
+      volumes:
+      - name: myemptydir
+        emptyDir: {}

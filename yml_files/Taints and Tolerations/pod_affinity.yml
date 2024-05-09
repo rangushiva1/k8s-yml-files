@@ -1,0 +1,34 @@
+# when you deploy below pods will go to pending, in order to run the pods then use lables as below 
+
+#kubectl label pod nginx001-54c797b4c-8cqrr perf=high, then only pods will run
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx001
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      cloud: aws
+  template:
+    metadata:
+      labels:
+        cloud: aws
+        performance: high
+    spec:
+      affinity:
+        podAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+              - key: perf
+                operator: In
+                values:
+                - high
+            topologyKey: topology.kubernetes.io/zone
+      containers:
+      - name: nginx001
+        image: nginx:latest
+
+ 

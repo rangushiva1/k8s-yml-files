@@ -1,0 +1,33 @@
+---
+apiVersion: apps/v1 
+kind: Deployment 
+metadata: 
+  name: mongo-deployment 
+  labels:
+    app: mongodb 
+spec:
+  replicas: 1  
+  selector: 
+    matchLabels:
+      app: mongodb
+      name: mongodb 
+  template: 
+    metadata: 
+      labels:
+        app: mongodb
+        name: mongodb 
+    spec:
+      containers: 
+      - image: mongo
+        name: mongodb 
+        imagePullpolicy: Always 
+        volumeMounts: 
+        - name: mongodb-data
+          mountPath: /data/db 
+      volumes: 
+      - name: mongodb-data 
+        awsElasticBlockStore:
+           volumeID: vol-0755d708d698d035a
+           fsType: ext4 
+      nodeSelector:
+          kubernetes.io/hostname: ip-172-20-76-92.ec2.internal

@@ -1,0 +1,61 @@
+Scheduling:
+ip-172-20-76-249.us-west-1.compute.internal
+ip-172-20-33-142.us-west-1.compute.internal
+
+perf=low
+ip-172-20-73-221.us-west-1.compute.internal
+ip-172-20-32-11.us-west-1.compute.internal
+
+
+kubectl label node ip-172-20-76-249.us-west-1.compute.internal perf=high
+kubectl label node ip-172-20-33-142.us-west-1.compute.internal perf=high
+
+kubectl label node ip-172-20-73-221.us-west-1.compute.internal perf=low
+kubectl label node ip-172-20-32-11.us-west-1.compute.internal perf=low
+
+
+Syntax to apply lables for taints,
+kubectl lable node <node ip> lable
+
+To remove taints:
+kubectl label node ip-172-20-76-249.us-west-1.compute.internal perf-
+kubectl label node ip-172-20-33-142.us-west-1.compute.internal perf-
+
+
+kubectl label node ip-172-20-73-221.us-west-1.compute.internal perf-
+kubectl label node ip-172-20-32-11.us-west-1.compute.internal perf-
+
+Taints and Tolerations: 
+
+kubectl taint node ip-172-20-76-249.us-west-1.compute.internal perf=high:NoSchedule
+kubectl taint node ip-172-20-33-142.us-west-1.compute.internal perf=high:NoSchedule
+kubectl taint node ip-172-20-73-221.us-west-1.compute.internal perf=low:NoSchedule
+kubectl taint node ip-172-20-32-11.us-west-1.compute.internal perf=low:NoSchedule
+
+kubectl taint node ip-172-20-76-249.us-west-1.compute.internal perf=high:NoExecute
+kubectl taint node ip-172-20-33-142.us-west-1.compute.internal perf=high:NoExecute
+kubectl taint node ip-172-20-73-221.us-west-1.compute.internal perf=low:NoExecute
+kubectl taint node ip-172-20-32-11.us-west-1.compute.internal perf=low:NoExecute
+
+
+TO remove taints:
+kubectl taint node ip-172-20-76-249.us-west-1.compute.internal perf-
+kubectl taint node ip-172-20-33-142.us-west-1.compute.internal perf-
+kubectl taint node ip-172-20-73-221.us-west-1.compute.internal perf-
+kubectl taint node ip-172-20-32-11.us-west-1.compute.internal perf-
+
+We can also use patch to make changes in taints
+
+kubectl patch deployment nginx003 --patch "$(cat patch.yaml)"
+
+
+patch yaml file ex:
+
+spec:
+  template:
+    app: nginx001 # if this give error remove this line
+    spec:
+      tolerations:
+         - effect: "NoExecute"
+           key: "perf"
+           value: "high"

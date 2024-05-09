@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: nginx001
+  name: nginx001
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      app: nginx001
+  template:
+    metadata:
+      labels:
+        app: nginx001
+    spec:
+      containers:
+      - image: nginx:latest
+        name: rollingupdate
+      tolerations:
+         - key: "perf"
+           operator: "Equal"
+           value: "high"
+           effect: "NoExecute"
+
+#This is for patch taints
+spec:
+  template:
+    app: nginx001 # if this give error remove this line
+    spec:
+      tolerations:
+         - effect: "NoExecute"
+           key: "perf"
+           value: "high"
+           

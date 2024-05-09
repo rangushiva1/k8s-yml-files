@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: ctrd
+  labels:
+    k8s-app: ctrd
+spec:
+  selector:
+    matchLabels:
+      name: ctrd
+  template:
+    metadata:
+      labels:
+        name: ctrd
+    spec:
+      containers: 
+      - name: ctrd
+        image: sreeharshav/utils:containerd
+        volumeMounts: 
+          - name: myemptydir
+            mountPath: /etc/myemptydir 
+          - name: containerdsock
+            mountPath: "/run/containerd/ containerd.sock"
+      volumes: 
+        - name: myemptydir
+          emptyDir: {} 
+        - name: containerdsock 
+          hostPath:
+            path: /run/containerd/containerd.sock

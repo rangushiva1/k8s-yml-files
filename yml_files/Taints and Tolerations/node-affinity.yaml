@@ -1,0 +1,61 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: nginx001
+  name: nginx001
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      app: nginx001
+  template:
+    metadata:
+      labels:
+        app: nginx001
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:  # required means if there is only match then only it will run
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: perf
+                operator: In
+                values:
+                - high
+      containers:
+      - name: nginx
+        image: nginx:latest
+
+
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: nginx002
+  name: nginx002
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      app: nginx002
+  template:
+    metadata:
+      labels:
+        app: nginx002
+    spec:
+      affinity:
+        nodeAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:  # pods will be created if no lables are given also
+          - weight: 1
+            preference:
+              matchExpressions:
+              - key: perf
+                operator: In
+                values:
+                - highhh
+      containers:
+      - name: nginx
+        image: nginx:latest

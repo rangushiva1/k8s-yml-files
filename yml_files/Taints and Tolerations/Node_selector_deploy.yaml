@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: nginx001
+  name: nginx001
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      app: nginx001
+  template:
+    metadata:
+      labels:
+        app: nginx001
+    spec:
+      containers:
+      - image: nginx:latest
+        name: rollingupdate
+      nodeSelector:
+         perf: high   #this can be given as per our wish

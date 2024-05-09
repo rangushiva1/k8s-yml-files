@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx001
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      cloud: aws
+  template:
+    metadata:
+      labels:
+        cloud: aws
+        performance: high
+    spec:
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: perf
+                  operator: In
+                  values:
+                  - high
+              topologyKey: topology.kubernetes.io/zone
+      containers:
+      - name: nginx001
+        image: nginx:latest

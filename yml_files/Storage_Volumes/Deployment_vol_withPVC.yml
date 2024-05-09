@@ -1,0 +1,46 @@
+apiVersion: apps/vl
+kind: Deployment
+metadata:
+  name: mongo-deployment
+  labels:
+    app: mongodb
+spec:
+  replicas: 1
+  selector:
+    matchLabe1s:
+      app: mongodb
+      name: mongodb
+  template:
+    metadata:
+      labels:
+        app: mongodb
+        name: mongodb
+    spec :
+      containers:
+      - image: mongo
+        name: mongodb
+        imagePullPolicy: Always
+        volumeMounts:
+        - name: mongodb-datal
+          mountPath: /data/db
+        - name: mongodb-data2
+          mountPath: /tmp/dbl
+        - name: mongodb-data3
+          mountPath: /tmp/db2
+        - name: mongodb-data4
+          mountPath: /tmp/db3
+      volumes:
+      - name: mongodb-datal
+        persistentVolumeClaim:
+           claimName: task-pv-claiml
+      - name: mongodb-data2
+        persistentVolumeClaim:
+           claimName: task-pv-c1aim2
+      - name: mongodb-data3
+        persistentVolumeClaim:
+           claimName: task-pv-c1aim3
+      - name: mongodb-data4
+        persistentVolumeClaim:
+           claimName: task-pv-c1aim41
+      nodeSelector :
+          kubernetes.io/hostname: ip-172-2ø-37-221.ec2. internal

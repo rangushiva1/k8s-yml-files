@@ -1,0 +1,20 @@
+kubectl run utils --image-sreeharshav/utils:latest - run utils pod image
+kubectl get pods -o wide - Tget indetail of pods
+kubectl get deploy - To get deployment info
+kubectl expose deployment nginx01 --port=80 --target-port=80 - TO create port service
+and expose to outside to access it- not for prod.
+kubectl get svc - TO know running services
+kubectl expose deployment nginx01 --name nodeportsvc --port=80 --target-port=80 --typr=NodePort --dry-run - Cmnd to check mode
+kubectl expose deployment nginx01 --name nodeportsvc --port=80 --target-port=80 --typr=NodePort --dry-run -o yaml - TO get yaml file output
+kubectl get ep - TO check active end points
+nslookup nginx01- TO get service ip addr which is in back end	
+
+Ingress controller:
+kubectl get all -n kube-system - To see all services and pods
+kubectl get ns(namespace) - To check all namespaces
+kubectl get all -n kube-system- can be replaced by each ns
+kubectl get ingress or ing -A - To get ingress contrl info
+kubectl get secrets - TO get secrets 
+
+
+
