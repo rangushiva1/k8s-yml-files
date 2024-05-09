@@ -1,0 +1,34 @@
+---
+    apiVersion: networking.k8s.io/v1
+    kind: Ingress
+    metadata:
+      name: red-ingress
+      annotations:
+        ingress.kubernetes.io/rewrite-target: /
+        kubernetes.io/ingress.class: "nginx"
+        nginx.ingress.kubernetes.io/ssl-redirect: "false"
+    spec:
+      tls:
+      - hosts:
+          - red.shiva-devops.online
+        secretName: nginx-tls-default
+      rules:
+      - host: red.shiva-devops.online
+        http:
+          paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: red
+                port:
+                  number: 80
+
+########## TO create a tls certificate with ingress when we bought it ######
+
+#To use a ssl certificate using key and cert:
+
+#create tls.key and tls.crt in folder
+
+#Then run,
+#kubectl create secret tls nginx-tls-default --key="tls.key" --cert="tls.crt"

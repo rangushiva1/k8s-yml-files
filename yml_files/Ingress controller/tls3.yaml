@@ -1,0 +1,19 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: nginx-tls-default-lets
+  namespace: default
+spec:
+  secretName: nginx-tls-default-lets
+  issuerRef:
+    name: letsencrypt-prod
+    kind: ClusterIssuer
+  dnsNames:
+    - '*.shiva-devops.online'
+  acme:
+    config: 
+      - dns01:
+          provider: route53
+        domains:
+           - '*.shiva-devops.online' 
+ 

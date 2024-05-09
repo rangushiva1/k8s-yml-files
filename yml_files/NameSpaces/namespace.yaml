@@ -1,0 +1,24 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    run: prod-pod
+  name: prod-pod
+  namespace: production
+spec:
+  containers:
+  - image: sreeharshav/utils:latest
+    name: prod-pod
+
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    run: dev-pod
+  name: dev-pod
+  namespace: development
+spec:
+  containers:
+  - image: sreeharshav/utils:latest
+    name: dev-pod

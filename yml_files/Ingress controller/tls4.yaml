@@ -1,0 +1,22 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata: 
+  name: java-ingress
+  annotations:
+    ingress.kubernetes.io/rewrite-target: /
+spec:
+  tls:
+  - hosts:
+    - "java.telugugcp.xyz"
+    secretName: nginx-tls-default
+  rules:
+  - host: java.t1elugugcp.xyz
+    http:
+      paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: javadeploy 
+              port:
+                number: 8001 

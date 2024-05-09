@@ -1,0 +1,32 @@
+#JOB FOR MYSQL DUMP
+---
+apiVersion: batch/vl
+kind: Job
+metadata:
+  name: mysqldump
+spec:
+  template :
+    spec:
+      containers:
+      - name: mysqldumpl
+        image: centos/mysq1-57-centos7
+        command: ["/bin/sh", "mysqldump -u$MYSQL_USER -p$MYSQL_PWD $MYSQL_DB -h MYSQL_HOST | gzip -c > /tmp/dump/date.sql.gz"]
+        env:
+         - name: MYSQL_USER
+           value: "root"
+         - name: MYSQL_PWD
+           value: "India@12345"
+         - name: MYSQL_HOST
+           value: "mysq11"
+         - name: MYSQL_DB
+           value: "myflixdb"
+        volumeMounts :
+            - mountPath: /tmp/
+              name: dbdumpsvol
+              subpath: job03
+      restartP01icy: Never
+      volumes:
+         - name: dbdumpsvol
+           hostPath:
+             path: /tmp/
+      nodeName: ip-172-2e-96-57.ec2.interna1

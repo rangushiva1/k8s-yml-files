@@ -1,0 +1,15 @@
+#using the file we can bind the role to user and then they can access the resoucres,
+#what we gave access in the role yml file
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: anand-RoleBinding
+  namespace: development
+subjects:
+- kind: User
+  name: anand
+  apiGroup: rbac.authorization.k8s.io
+roleRef:
+  kind: Role
+  name: dev-admin-role #this need to be same which mentioned in role file
+  apiGroup: rbac.authorization.k8s.io

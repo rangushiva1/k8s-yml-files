@@ -1,0 +1,55 @@
+apiVersion: extensions/vibeta1
+kind: Ingress
+metadata:
+  name: www-ingress
+  annotations:
+    ingress.kubernetes.io/rewrite-target: /
+spec:
+  tls:
+    - hosts:
+       - www.trainingk8s.xyz
+      secretName: nginx-tls-default2
+  rules:
+  - host: www.trainingk8s.xyz
+    http:
+      paths: 
+        - path: /
+          backend:
+            serviceName: www-deployment
+            servicePort: 80
+
+---
+apiVersion: extensions/vlbeta1
+kind: Ingress
+metadata:
+  name: myappl-ingress
+  annotations:
+    ingress.kubernetes.io/rewrite-target: /
+spec:
+  tls:
+    - hosts:
+       - myappl.trainingk8s.xyz
+      secretName: nginx-tls-default2
+  rules:
+  - host: myappl.trainingk8s.xyz
+    http:
+      paths:
+        - path: /
+          backend:
+            serviceName: myappl-deployment
+            servicePort: 80
+
+---
+apiVersion: extensions/vlbeta1
+kind: Ingress
+metadata:
+  name: myapp2-ingress
+  annotations: 
+    ingress.kubernetes.io/rewrite-target: /
+spec:
+    http:
+      paths:
+        - path: /
+          backend:
+            serviceName: myapp2-deployment
+            servicePort: 80

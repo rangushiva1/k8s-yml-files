@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: nginx01
+  name: nginx01
+spec:
+  replicas: 6
+  selector:
+    matchLabels:
+      app: nginx01
+  template:
+    metadata:
+      labels:
+        app: nginx01
+    spec:
+      containers:
+      - image: nginx:latest
+        name: rollingupdate
+	ports:
+	  - containerPort: 80
+	volumeMounts:
+	  - mountPath: /var/www/html/index.html
+	    name: nginx
+	    subPath: index.html
+      volumes:
+	  - name: nginx
+	    configMap:
+	      name: html1

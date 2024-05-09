@@ -1,0 +1,22 @@
+#This file create the role for user to provide the access to mentioned resources.
+#Next we need to bind the role, called rolebinding.
+kind: Role
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: dev-admin-role
+  namespace: development
+rules:
+- apiGroups: ["", "extensions", "apps"]
+  resources: ["pods", "deployments", "replicasets", "services"] 
+  verbs: ["get", "update", "list", "create", "delete"]
+
+---
+kind: Role
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: prod-admin-role
+  namespace: development I
+rules:
+- apiGroups: ["", "extensions", "apps"]
+  resources: ["pods", "deployments", "replicasets", "services"]
+  verbs: ["get", "update", "list", "create", "delete"]
