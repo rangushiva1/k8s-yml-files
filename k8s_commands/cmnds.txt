@@ -1,0 +1,88 @@
+kubectl run utils --image-sreeharshav/utils:latest - run utils pod image
+kubectl get pods -o wide - To get indetail of pods
+kubectl get deploy - To get deployment info
+kubectl expose deployment nginx01 --port=80 --target-port=80 - TO create port service
+and expose to outside to access it- not for prod.
+kubectl get svc - TO know running services
+kubectl expose deployment nginx01 --name nodeportsvc --port=80 --target-port=80 --type=NodePort --dry-run - Cmnd to check mode
+kubectl expose deployment nginx01 --name nodeportsvc --port=80 --target-port=80 --type=NodePort --dry-run -o yaml - TO get yaml file output
+kubectl get ep - TO check active end points
+nslookup nginx01- TO get service ip addr which is in back end	
+
+Ingress controller:
+kubectl get all -n kube-system - To see all services and pods
+kubectl get ns(namespace) - To check all namespaces
+kubectl get all -n kube-system- can be replaced by each ns
+kubectl get ingress or ing -A - To get ingress contrl info
+kubectl get secrets - TO get secrets 
+kubectl get all -n cert-manager
+kubectl create secret tls nginx-tls-default(image name) --key=tls.key --cert=tls.crt - To create secret
+
+kubectl get ns >> namespcaes list
+kubectl get pv >> list persistenct vol
+kubectl get ds >> list deamonset.
+
+To delete svcs and kops:
+kubectl delete deploy -all
+kubectl delete sva -all
+kubectl delete ns (mention ns here) 
+kops validate cluster
+kops delete cluster --name (kops url) --yes
+
+kubectl create secret generic acme-route53 --from-literal secret-access-key=VZ/A9oqWx5JgZNGIFggi0oqTsPv5c/+IChOp6REt -n cert-manager
+
+kubectl get certificate >> to know certificate details
+
+kubectl describe certificate nginx-tls-default-lets-xfncb
+kubectl describe certificaterequests.cert-manager.io "nginx-tls-default-lets-xfncb-tccb8"
+kubectl describe order "nginx-tls-default-lets-xfncb-tccb8"
+kubectl describe challenge "nginx-tls-default-lets-xfncb-tccb8-358344973-1363242378"
+
+Taints and Tolations:
+perf=high
+ip-172-20-76-249.us-west-1.compute.internal
+ip-172-20-33-142.us-west-1.compute.internal
+
+perf=low
+ip-172-20-73-221.us-west-1.compute.internal
+ip-172-20-32-11.us-west-1.compute.internal
+
+
+kubectl label node ip-172-20-76-249.us-west-1.compute.internal perf=high
+kubectl label node ip-172-20-33-142.us-west-1.compute.internal perf=high
+
+
+kubectl label node ip-172-20-73-221.us-west-1.compute.internal perf=low
+kubectl label node ip-172-20-32-11.us-west-1.compute.internal perf=low
+
+
+Syntax to apply lables for taints,
+kubectl lable node <node ip> lable
+
+
+kubectl get nodes -l perf=high  >>-- To list nodes under the lables
+
+To remove taints:
+kubectl label node ip-172-20-76-249.us-west-1.compute.internal perf-
+kubectl label node ip-172-20-33-142.us-west-1.compute.internal perf-
+
+
+kubectl label node ip-172-20-73-221.us-west-1.compute.internal perf-
+kubectl label node ip-172-20-32-11.us-west-1.compute.internal perf-
+
+######################################################
+
+kubectl label node ip-172-20-50-16.us-west-1.compute.internal perf=high
+
+kubectl label node ip-172-20-74-229.us-west-1.compute.internal perf=low
+
+
+kubectl label pod nginx001-54c797b4c-8cqrr perf=high
+
+kubectl label pod nginx001-6d7f8c9c57-ggv5x perf=low
+
+ku cordon nodename  ==>> this will make the node not to schedule pods in that node, used for troubleshooting.
+
+ku drain nodename ==>> this will drain not to enter another pods into that nodes, will remove all pods, even running pods.
+
+ku uncordon nodename ==>> opposite to cordon

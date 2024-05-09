@@ -1,0 +1,138 @@
+3 NODE CLUSTER WITH 1 MASTER:
+kops create cluster --name=shiva-devops.online \
+--state=s3://k8s-shiva --zones=us-west-1a,us-west-1b \
+--node-count=3 --node-size=t3.medium --master-size=t3.medium \
+--master-volume-size 10 --node-volume-size 10 \
+--dns-zone=shiva-devops.online --yes or --dry-run --output yaml
+
+kops create cluster --name=shiva-devops.online \
+--state=s3://k8s-shiva --zones=us-west-1a,us-west-1b \
+--node-count=2 --master-count=1 --node-size=t3.medium --master-size=t3.medium \
+--master-zones=us-west-1a --master-volume-size 10 --node-volume-size 10 \
+--dns-zone=shiva-devops.online --dry-run --output yaml
+
+export NAME=shiva-devops.online
+export KOPS_STATE_STORE=s3://k8s-shiva
+export AWS_REGION=us-west-1
+export CLUSTER_NAME=shiva-devops.online
+export EDITOR='/usr/bin/nano'
+
+kops validate cluster --wait 10m
+
+kops export kubecfg --admin >> Run this when you get authorization error.
+
+kops delete cluster --name shiva-devops.online --yes
+
+**********when edited and update the node in cluster but the pods was not distributed over the nodes
+
+
+Suggestions:
+ * list clusters with: kops get cluster
+ * edit this cluster with: kops edit cluster shiva-devops.online
+ * edit your node instance group: kops edit ig --name=shiva-devops.online nodes-us-west-1a
+ * edit your master instance group: kops edit ig --name=shiva-devops.online master-us-west-1a
+ 
+ Suggestions:
+ * validate cluster: kops validate cluster --wait 10m
+ * list nodes: kubectl get nodes --show-labels
+ * ssh to the master: ssh -i ~/.ssh/id_rsa ubuntu@api.shiva-devops.online
+ * the ubuntu user is specific to Ubuntu. If not using Ubuntu please use the appropriate user based on your OS.
+ * read about installing addons at: https://kops.sigs.k8s.io/addons.
+ 
+ kubectl get pod -n kube-system - Kubesystem details in more
+ kubectl cluster-info
+ kubectl get pods -n kube-system -o wide
+ kubectl get svc and -A - To get service details
+ kubectl get pods,svc,deploy
+ kubectl run pod01 --image=sreeharshav/rollingupdate:v5
+ kubectl expose pod pod01 --port=8000 --target-port=80 --type=NodePort
+ kubectl create deployment deploy01 --image=sreeharshav/rollingupdate:v5 --replicas 6
+ kubectl expose deploy deploy01 --port=9000 --target-port=80 --type=NodePort
+ watch kubectl get pods or pods -o wide - To watch the pods eveytime
+ kops get ig - To get nodes info (ig=instance group)
+ kops delete ig --name=shiva-devops.online nodes-us-west-1b --yes - To delete parti nodes
+ kops edit cluster - To edit in cluster
+ kops get instancegroups - To get nodes
+ kops edit ig --name=shiva-devops.online nodes-us-west-1a
+  kubectl run tesetpod1 --image=nginx:latest --dry-run -o yaml 
+  echo 'file content' | kubectl apply -f -   - To run any yaml file as declarative
+  
+kubectl port-forward testpod1 8000:80 - To forward the app to ports
+Kube Forwader Software is used to get the pod app access in our browser in localhost
+cat ~/.kube/config - paste this in Kube Forwader Software and access in browser
+  
+kubectl logs podname or -f - TO check logs of a pod
+  
+kubectl run utils --image=sreeharshav/utils:latest - To install kubernetes utils
+  
+kubectl exec -it utils(podname) --bash (give any cmnd here)---To run cmnds inside a pod 
+  
+kubectl get pods -l tier=frontend
+   
+kubectl label pod testpod3 tier=frontend - To rename the pods
+   
+kubectl edit rs frontend(tiername/replicas name)  -To edit replica set but not recom via here, declarate is better
+   
+kubectl delete rs frontend - To delete Repset
+   
+kubectl expose replicaset frontend(replicasetname) --port=9000 --target-port=80 --type=NodePort
+   
+kubectl create deploy nginx01 --image=sreeharshav/rollingupdate:v1 --replicas 6 --dry-run -o yaml
+
+kubectl expose deployment nginx01 --port=6000 --target-port=80 --type=NodePort
+
+kubectl describe deployments.apps nginx01 - To describe about deployment
+kubectl describe replicaset.apps nginx01-06
+kubectl describe pod podname
+
+kubectl set image deployment nginx01 rollingupdate=sreeharshav/testcontainer:v1 - To update new image
+
+kubectl set image deployment nginx01 rollingupdate=nginx:latest --record - TO make a rollout histroy record
+kubectl rollout history deployment nginx01
+
+kubectl rollout undo deployment nginx01 --to-revision=2 - TO undo rollout deploy
+ 
+kubectl expose deployment nginx01 --name nodeportsvc --port=80 --target-port=80 --type=NodePort --dry-run -o yaml
+ 
+kubectl expose deployment nginx01 --name nodeportsvc --port=80 --target-port=80 --type=Loadbalancer --dry-run -o yaml
+
+kubectl create deploy red --image=index.docker.io/sreeharshav/rollingupdate:v1 --replicas 3
+kubectl create deploy blue --image=index.docker.io/sreeharshav/rollingupdate:v5 --replicas 3
+kubectl create deploy green --image=index.docker.io/sreeharshav/testcontainer:v1 --replicas 3
+
+kubectl expose deploy red --port=80 --target-port=80
+kubectl expose deploy blue --port=80 --target-port=80
+kubectl expose deploy green --port=80 --target-port=80
+
+kubectl get all -n kube-system
+kubectl get ing
+
+kubectl get ns
+kubectl get all -n ingress-nginx
+kubectl get pod -n ingress-nginx
+kubectl get svc -n ingress-nginx
+
+To use a ssl certificcate using key and cert:
+
+create tls.key and tls.crt in folder
+
+Then run,
+kubectl create secret tls nginx-tls-default --key="tls.key" --cert="tls.crt"
+
+kubectl get secret
+kubectl delete ing >>>> to delete ingress controller
+
+
+kubectl get ns >> to get namespace
+
+ku get pods -n <namespace>  -- to list pods in that ns
+
+kubectl config set-context --current --namespace=development  >> to change default ns
+
+kubectl delete resourcequotas -n <namespacename> <resourcequotasname>
+
+kubectl create clusterrolebinding dashboard-admin --clusterrole=cluster-admin --serviceaccount=default:
+
+
+To kill/ delete a container in a pod:
+ku exec -it nginx-deployment-89bdcf854-dzvrz -c nginx -- /bin/sh -c "kill 1"
